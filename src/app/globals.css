@@ -120,7 +120,202 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* this is for real time sms dashboard heading text  */
+.sms_dashboard_heading {
+  color: var(--White-text, #e6e6e6);
+  text-align: center;
+
+  /* H2/28 medium */
+  font-family: Inter;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+/* this is for sms dashboard number and head part */
+.sms_head {
+  display: flex;
+  padding: 24px;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+  border-radius: 14px 14px 0 0;
+  border: 1px solid var(--brand, #0082f2);
+  background: rgba(0, 130, 242, 0.05);
+}
+
+/* this is for Session Info */
+.session_info {
+  display: flex;
+  padding: 24px;
+  gap: 10px;
+  border-right: 1px solid rgba(0, 130, 242, 0.5);
+  border-bottom: 1px solid rgba(0, 130, 242, 0.5);
+  border-left: 1px solid rgba(0, 130, 242, 0.5);
+}
+
+/* this is other message box */
+.other_message {
+  display: inline-block;
+  padding: 10px 14px;
+  gap: 10px;
+  border-radius: 0 8px 8px 20px;
+  background: rgba(30, 99, 251, 0.08);
+}
+
+/* this is use message */
+.use_message {
+  display: inline-flex;
+  padding: 10px 14px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: 0 8px 8px 20px;
+  border: 1px solid rgba(0, 130, 242, 0.37);
+  background: rgba(30, 99, 251, 0.08);
+}
+
+.message_time {
+  font-weight: bold;
+  /* Make the time stand out (optional) */
+  margin-right: 10px;
+  /* Optional: space between time and message */
+}
+
+.message_content {
+  display: inline-block;
+}
+
+/* buy again button */
+.buy_again_btn {
+  display: flex;
+  height: 52px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  align-self: stretch;
+  border-radius: 8px;
+  border: 1px solid var(--brand, #0082f2);
+  background: rgba(0, 130, 242, 0.14);
+}
+
+/* this is for coin */
+.coin {
+  -webkit-appearance: none;
+  /* Remove default styling in Webkit browsers (Chrome, Safari) */
+  -moz-appearance: none;
+  /* Remove default styling in Firefox */
+  appearance: none;
+  display: flex;
+  width: 100%;
+  height: 64px;
+  padding: 14px;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 12px;
+  border: 1px solid #37404e;
+}
+
+.price {
+  background: var(
+    --Brand-liner,
+    linear-gradient(180deg, #0685f1 0%, #aad8ff 100%)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* this is the card part  */
+.card_layout {
+  display: flex;
+  width: 210px;
+  height: 126px;
+  padding: 24px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: 12px;
+  border: 1px solid var(--White-text, #e6e6e6);
+}
+
+.card_layout:hover {
+  display: flex;
+  width: 210px;
+  height: 126px;
+  padding: 24px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: 12px;
+  border: 1px solid var(--Brand-liner, #0685f1);
+}
+
+/* this is for card number input */
+.card_input {
+  display: flex;
+  width: 1139px;
+  height: 64px;
+  padding: 14px;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 12px;
+  border: 1px solid #37404e;
+}
+
+/* this is for pay button */
+.pay_btn {
+  display: flex;
+  height: 48px;
+  padding: 8px 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  align-self: stretch;
+  border-radius: 8px;
+  background: linear-gradient(270deg, #a7d6ff 0.1%, #2199ff 100%);
+  box-shadow: 0 4px 4px 0 rgba(255, 255, 255, 0.12) inset;
+}
+
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Modal content */
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* this is for payout modal */
+.payout_modal {
+  display: inline-flex;
+  height: 263px;
+  padding: 24px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  border: 1px solid var(--Brand-liner, #0685f1);
+  background: rgba(45, 98, 193, 0.1);
 }
