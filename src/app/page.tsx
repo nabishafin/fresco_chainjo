@@ -1,5 +1,3 @@
-
-
 import Faq from "@/components/Faq";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
@@ -23,7 +21,9 @@ export default function Home() {
         alt=""
       />
 
-      <WorkStep></WorkStep>
+      <div id="works">
+        <WorkStep></WorkStep>
+      </div>
       <Image
         className="absolute top-300"
         src={ellipse}
@@ -31,7 +31,9 @@ export default function Home() {
         height={400}
         alt=""
       />
-      <Pricing></Pricing>
+      <div id="pricing">
+        <Pricing></Pricing>
+      </div>
       <Faq></Faq>
       <Footer></Footer>
     </div>

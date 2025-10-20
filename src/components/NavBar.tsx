@@ -29,12 +29,24 @@ const NavBar = () => {
           <h1 className="hover:text-blue-400 transition-colors duration-200 cursor-pointer">
             Home
           </h1>
-          <h1 className="hover:text-blue-400 transition-colors duration-200 cursor-pointer">
+          <a
+            href="#works"
+            className="hover:text-blue-400 transition-colors duration-200 cursor-pointer"
+          >
             How It Works
-          </h1>
-          <h1 className="hover:text-blue-400 transition-colors duration-200 cursor-pointer">
+          </a>
+          <a
+            href="#pricing"
+            className="hover:text-blue-400 transition-colors duration-200 cursor-pointer"
+          >
             Pricing
-          </h1>
+          </a>
+
+          <Link href={"/message"}>
+            <h1 className="hover:text-blue-400 transition-colors duration-200 cursor-pointer">
+              Message
+            </h1>
+          </Link>
         </div>
 
         {/* Desktop Buttons */}
@@ -59,9 +71,11 @@ const NavBar = () => {
                 shadow-[0_0_6px_#0082F2]
               `}
             />
-            <button className="relative px-6 py-2 bg-[#040811] text-white font-semibold rounded-lg transition-all duration-300 ease-in-out">
-              LOGIN
-            </button>
+            <Link href={"/login"}>
+              <button className="relative px-6 py-2 bg-[#040811] text-white font-semibold rounded-lg transition-all duration-300 ease-in-out">
+                LOGIN
+              </button>
+            </Link>
           </div>
         </div>
 
@@ -96,9 +110,12 @@ const NavBar = () => {
           <h1 className="hover:text-blue-400 transition-colors duration-200 cursor-pointer">
             How It Works
           </h1>
-          <h1 className="hover:text-blue-400 transition-colors duration-200 cursor-pointer">
+          <a
+            href="#pricing"
+            className="hover:text-blue-400 transition-colors duration-200 cursor-pointer"
+          >
             Pricing
-          </h1>
+          </a>
         </div>
 
         {/* Mobile Buttons */}
