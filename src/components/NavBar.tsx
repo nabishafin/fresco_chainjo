@@ -32,13 +32,13 @@ const NavBar = () => {
             </h1>
           </Link>
           <a
-            href="#works"
+            href="/#works"
             className="hover:text-blue-400 transition-colors duration-200 cursor-pointer"
           >
             How It Works
           </a>
           <a
-            href="#pricing"
+            href="/#pricing"
             className="hover:text-blue-400 transition-colors duration-200 cursor-pointer"
           >
             Pricing
@@ -106,14 +106,19 @@ const NavBar = () => {
 
         {/* Menu Links */}
         <div className="flex flex-col text-white font-medium px-8 gap-6 mt-8">
-          <h1 className="hover:text-blue-400 transition-colors duration-200 cursor-pointer">
-            Home
-          </h1>
-          <h1 className="hover:text-blue-400 transition-colors duration-200 cursor-pointer">
-            How It Works
-          </h1>
+          <Link href={"/"}>
+            <h1 className="hover:text-blue-400 transition-colors duration-200 cursor-pointer">
+              Home
+            </h1>
+          </Link>
           <a
-            href="#pricing"
+            href="/#works"
+            className="hover:text-blue-400 transition-colors duration-200 cursor-pointer"
+          >
+            How It Works
+          </a>
+          <a
+            href="/#pricing"
             className="hover:text-blue-400 transition-colors duration-200 cursor-pointer"
           >
             Pricing
@@ -122,9 +127,11 @@ const NavBar = () => {
 
         {/* Mobile Buttons */}
         <div className="flex flex-col gap-5 items-start px-8 mt-10">
-          <button className="font-semibold text-white hover:text-blue-400 transition-colors duration-200">
-            SIGN UP
-          </button>
+          <Link href="/sign-up">
+            <button className="font-semibold text-white hover:text-blue-400 transition-colors duration-200">
+              SIGN UP
+            </button>
+          </Link>
 
           {/* Login Button - Mobile */}
           <div className="relative group">
@@ -139,9 +146,11 @@ const NavBar = () => {
                 shadow-[0_0_6px_#0082F2]
               `}
             />
-            <button className="relative px-6 py-2 bg-[#040811] text-white font-semibold rounded-lg transition-all duration-300 ease-in-out">
-              LOGIN
-            </button>
+            <Link href="/login">
+              <button className="relative px-6 py-2 bg-[#040811] text-white font-semibold rounded-lg transition-all duration-300 ease-in-out">
+                LOGIN
+              </button>
+            </Link>
           </div>
         </div>
       </div>
