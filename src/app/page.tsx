@@ -13,8 +13,9 @@ export default function Home() {
       <NavBar></NavBar>
 
       <Hero />
+
       <Image
-        className="absolute top-0"
+        className="absolute top-0 -z-10"
         src={ellipse}
         width={800}
         height={400}

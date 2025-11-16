@@ -10,7 +10,7 @@ const NavBar = () => {
   const [openMenu, setOpenMenu] = useState(false);
 
   return (
-    <div className="pt-10 relative">
+    <div className="pt-10  sticky top-0 z-50">
       {/* Main Navbar */}
       <div className="max-w-10/12 text-white flex items-center justify-between mx-5 md:mx-40 rounded-xl bg-[#040811] border border-[#1D97FF36] sticky top-[10px] z-50 px-5 py-3 md:py-4">
         {/* Logo */}
@@ -26,9 +26,11 @@ const NavBar = () => {
 
         {/* Desktop Navigation */}
         <div className="hidden lg:flex gap-16 font-medium">
-          <h1 className="hover:text-blue-400 transition-colors duration-200 cursor-pointer">
-            Home
-          </h1>
+          <Link href={"/"}>
+            <h1 className="hover:text-blue-400 transition-colors duration-200 cursor-pointer">
+              Home
+            </h1>
+          </Link>
           <a
             href="#works"
             className="hover:text-blue-400 transition-colors duration-200 cursor-pointer"

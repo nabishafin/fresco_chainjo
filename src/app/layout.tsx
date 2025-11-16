@@ -43,7 +43,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${robotoSlab.variable} ${inter.variable} antialiased relative bg-black`}
       >
         <Image
-          className="absolute"
+          className="absolute -z-[500]"
           src={circle}
           width={800}
           height={400}
