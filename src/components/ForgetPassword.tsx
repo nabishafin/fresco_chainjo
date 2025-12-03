@@ -1,4 +1,4 @@
-import { Mail, User } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
@@ -7,7 +7,7 @@ const ForgetPassword = () => {
         <div className=''>
             <div className='mb-8'>
                 <h2 className='text-[#E6E6E6] font-["inter"] lg:text-5xl/normal font-semibold text-center'>Forgot Password?</h2>
-                <p className='text-[#C8CACC] lg:text-lg/normal font-["inter"] text-center'>Don't worry! Enter your registered Email <br /> or Phone Number</p>
+                <p className='text-[#C8CACC] lg:text-lg/normal font-["inter"] text-center'>Don&apos;t worry! Enter your registered Email <br /> or Phone Number</p>
             </div>
 
             <form>
