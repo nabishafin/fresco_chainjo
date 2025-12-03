@@ -86,7 +86,7 @@ const NavBar = () => {
           onClick={() => setOpenMenu(true)}
           className="lg:hidden text-white cursor-pointer"
         >
-          <Menu size={28} />
+          <Menu size={26} />
         </div>
       </div>
 
