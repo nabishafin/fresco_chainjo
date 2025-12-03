@@ -1,7 +1,6 @@
 'use client';
 
 import { ShieldCheck } from 'lucide-react';
-import Link from 'next/link';
 import React, { useState, ChangeEvent, KeyboardEvent } from 'react';
 
 const ResetCodePass: React.FC = () => {
@@ -32,13 +31,13 @@ const ResetCodePass: React.FC = () => {
     return (
         <div className="text-center">
 
-            
-                
 
-                <button className='text-white bg-gradient-to-b from-[#0685F1] to-[#AAD8FF] mb-5 p-4 rounded-full'>
-                    <ShieldCheck size={30}/>
-                </button>
-            
+
+
+            <button className='text-white bg-gradient-to-b from-[#0685F1] to-[#AAD8FF] mb-5 p-4 rounded-full'>
+                <ShieldCheck size={30} />
+            </button>
+
 
             <h2 className="text-[#E6E6E6] font-['inter'] text-5xl/normal font-semibold mb-2">Enter Verification Code</h2>
             <p className="text-[#C8CACC] font-['inter'] text-sm mb-6">
@@ -66,7 +65,7 @@ const ResetCodePass: React.FC = () => {
             >
                 Verify
             </button>
-            <p className='text-[#E6E6E6] font-["inter"] text-sm'>Don't recieve the code? <span className='text-[#0082F2]'>Resend</span> </p>
+            <p className='text-[#E6E6E6] font-["inter"] text-sm'>Don&apos;t recieve the code? <span className='text-[#0082F2]'>Resend</span> </p>
         </div>
     );
 };

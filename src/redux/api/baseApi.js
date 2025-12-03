@@ -84,8 +84,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
         } else {
           throw new Error("Refresh failed - no data returned");
         }
-      } catch (error) {
-        // eslint-disable-line no-unused-vars
+      } catch (error) { // eslint-disable-line no-unused-vars
         // Refresh failed, logout user
         api.dispatch(logout());
         localStorage.removeItem("token");

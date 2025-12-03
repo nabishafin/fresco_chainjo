@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
-import Router from "next/router";
-import React, { useState } from "react";
+import React from "react";
 
 const Hero = () => {
   return (

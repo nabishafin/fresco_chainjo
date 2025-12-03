@@ -6,7 +6,6 @@ import { Menu, X } from "lucide-react";
 import Link from "next/link";
 
 const NavBar = () => {
-  const [isHovered, setIsHovered] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
 
   return (
@@ -31,18 +30,18 @@ const NavBar = () => {
               Home
             </h1>
           </Link>
-          <a
+          <Link
             href="/#works"
             className="hover:text-blue-400 transition-colors duration-200 cursor-pointer"
           >
             How It Works
-          </a>
-          <a
+          </Link>
+          <Link
             href="/#pricing"
             className="hover:text-blue-400 transition-colors duration-200 cursor-pointer"
           >
             Pricing
-          </a>
+          </Link>
 
           <Link href={"/message"}>
             <h1 className="hover:text-blue-400 transition-colors duration-200 cursor-pointer">
@@ -92,9 +91,8 @@ const NavBar = () => {
 
       {/* Mobile Slide Menu */}
       <div
-        className={`fixed z-50 bg-gradient-to-b from-[#0d0b0b] to-[#023562] h-screen right-0 top-0 w-[250px] transform transition-transform duration-500 ease-in-out ${
-          openMenu ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed z-50 bg-gradient-to-b from-[#0d0b0b] to-[#023562] h-screen right-0 top-0 w-[250px] transform transition-transform duration-500 ease-in-out ${openMenu ? "translate-x-0" : "translate-x-full"
+          }`}
       >
         {/* Close Button */}
         <div
@@ -111,18 +109,18 @@ const NavBar = () => {
               Home
             </h1>
           </Link>
-          <a
+          <Link
             href="/#works"
             className="hover:text-blue-400 transition-colors duration-200 cursor-pointer"
           >
             How It Works
-          </a>
-          <a
+          </Link>
+          <Link
             href="/#pricing"
             className="hover:text-blue-400 transition-colors duration-200 cursor-pointer"
           >
             Pricing
-          </a>
+          </Link>
         </div>
 
         {/* Mobile Buttons */}
