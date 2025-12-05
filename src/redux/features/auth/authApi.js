@@ -9,7 +9,7 @@ export const authApi = baseApi.injectEndpoints({
     // 01. login
     login: builder.mutation({
       query: (loginData) => ({
-        url: "/auth/admin-login",
+        url: "/users/login-user",
         method: "POST",
         body: loginData,
       }),
@@ -126,7 +126,16 @@ export const authApi = baseApi.injectEndpoints({
     // 10. register user
     register: builder.mutation({
       query: (data) => ({
-        url: "/auth/register",
+        url: "/users/add-user",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["auth"],
+    }),
+    // 11. register user (new)
+    registerUser: builder.mutation({
+      query: (data) => ({
+        url: "/users/add-user",
         method: "POST",
         body: data,
       }),
@@ -146,4 +155,5 @@ export const {
   useGetUserByTokenQuery,
   useUpdateUserMutation,
   useRegisterMutation,
+  useRegisterUserMutation,
 } = authApi;

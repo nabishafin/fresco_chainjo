@@ -2,14 +2,14 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setLogin, logout } from "../slices/authSlice";
 
 const BASE_URL =
-  import.meta.env.VITE_BASE_URL ||
-  "https://jersey-emissions-vbulletin-william.trycloudflare.com/api/v1";
+  process.env.NEXT_PUBLIC_BASE_URL ||
+  "https://operating-three-singh-container.trycloudflare.com/api/v1";
 
 // Create a base query with automatic token refresh
 const baseQuery = fetchBaseQuery({
   baseUrl: BASE_URL,
   prepareHeaders: (headers) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("accessToken");
     if (token) {
       headers.set("Authorization", `Bearer ${token}`);
     }
@@ -60,7 +60,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 
           if (newAccessToken) {
             // Store the new tokens
-            localStorage.setItem("token", newAccessToken);
+            localStorage.setItem("accessToken", newAccessToken);
             if (newRefreshToken) {
               localStorage.setItem("refreshToken", newRefreshToken);
             }
@@ -87,7 +87,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
       } catch (error) { // eslint-disable-line no-unused-vars
         // Refresh failed, logout user
         api.dispatch(logout());
-        localStorage.removeItem("token");
+        localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         window.location.href = "/"; // Optional: redirect to login
         return { error: { status: 401, data: "Session expired" } };
@@ -95,7 +95,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
     } else {
       // No refresh token, logout user
       api.dispatch(logout());
-      localStorage.removeItem("token");
+      localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
       window.location.href = "/"; // Optional: redirect to login
       return { error: { status: 401, data: "No refresh token" } };

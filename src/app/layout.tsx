@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter, Roboto_Slab } from "next/font/google";
 import "./globals.css";
-import Image from "next/image";
-import circle from "@/assets/circle.png";
-import circleRight from "@/assets/circle-right.png";
-import ellipse from "@/assets/side.png";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
+import ReduxProvider from "@/redux/ReduxProvider";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -42,36 +39,23 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${robotoSlab.variable} ${inter.variable} antialiased relative bg-black`}
       >
-        <Image
-          className="absolute -z-[500]"
-          src={circle}
-          width={800}
-          height={400}
-          alt=""
-        />
-        {/* <Image
-          className="absolute top-16"
-          src={ellipse}
-          width={800}
-          height={400}
-          alt=""
-        /> */}
-        {/* <Image
-          className="absolute top-300"
-          src={ellipse}
-          width={800}
-          height={400}
-          alt=""
-        /> */}
-        <Image
-          className="absolute right-0"
-          src={circleRight}
-          width={800}
-          height={400}
-          alt=""
-        />
+        {/* Top Left Gradient */}
+        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#0082F2] rounded-full mix-blend-screen filter blur-[150px] opacity-20 -z-10"></div>
 
-        {children}
+        {/* Top Right Gradient */}
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#00358F] rounded-full mix-blend-screen filter blur-[150px] opacity-20 -z-10"></div>
+
+        {/* Bottom Left Gradient */}
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#0082F2] rounded-full mix-blend-screen filter blur-[150px] opacity-20 -z-10"></div>
+
+        {/* Middle Gradient */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#0082F2] rounded-full mix-blend-screen filter blur-[200px] opacity-15 -z-10"></div>
+
+        {/* Bottom Right Gradient */}
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#00358F] rounded-full mix-blend-screen filter blur-[150px] opacity-20 -z-10"></div>
+
+
+        <ReduxProvider>{children}</ReduxProvider>
       </body>
     </html>
   );

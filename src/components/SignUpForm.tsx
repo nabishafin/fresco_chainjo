@@ -4,8 +4,39 @@ import React, { useState } from "react";
 import { Eye, EyeOff, Mail, User, Lock } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 
+import { useRegisterUserMutation } from "@/redux/features/auth/authApi";
+import { useRouter } from "next/navigation";
+
 const SignUpForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter(); // Initialize router
+  const [registerUser, { isLoading }] = useRegisterUserMutation();
+
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Submitting form with data:", formData); // Debug log
+    try {
+      console.log("Calling registerUser mutation..."); // Debug log
+      const response = await registerUser(formData).unwrap();
+      console.log("Registration successful:", response);
+      alert("Registration successful! Please login.");
+      router.push("/login"); // Redirect to login page
+    } catch (error) {
+      console.error("Registration failed:", error);
+      alert("Registration failed. Please try again.");
+    }
+  };
+
   return (
     <div>
       <div className="mb-5">
@@ -17,7 +48,7 @@ const SignUpForm = () => {
         </p>
       </div>
 
-      <form className="space-y-4">
+      <form className="space-y-4" onSubmit={handleSubmit}>
         {/* Full Name */}
         <div className="flex flex-col gap-2">
           <div>
@@ -31,6 +62,8 @@ const SignUpForm = () => {
               type="text"
               name="fullName"
               required
+              value={formData.fullName}
+              onChange={handleChange}
               className="w-full pl-10 pr-3 py-2 border-[1px] border-[#0082F2] text-[#D2D2D2] font-['inter'] lg:text-[1rem] rounded-lg outline-none"
               placeholder="John Doe"
             />
@@ -50,6 +83,8 @@ const SignUpForm = () => {
               type="email"
               name="email"
               required
+              value={formData.email}
+              onChange={handleChange}
               className="w-full pl-10 pr-3 py-2 text-[#D2D2D2] font-['inter'] lg:text-[1rem] border-[1px] border-[#0082F2] rounded-lg outline-none"
               placeholder="example@email.com"
             />
@@ -69,6 +104,8 @@ const SignUpForm = () => {
               type={showPassword ? "text" : "password"}
               name="password"
               required
+              value={formData.password}
+              onChange={handleChange}
               className="w-full pl-10 pr-10 py-2 text-[#D2D2D2] font-['inter'] lg:text-[1rem] border-[1px] border-[#0082F2] rounded-lg outline-none "
               placeholder="••••••••"
             />
@@ -85,9 +122,11 @@ const SignUpForm = () => {
         {/* Sign Up Button */}
         <button
           type="submit"
-          className="w-full my-5 font-['inter'] text-sm font-semibold lg:text-[18px] bg-gradient-to-r from-[#2199FF] to-[#A7D6FF] text-white py-2 rounded-lg hover:bg-indigo-700 transition duration-200 flex items-center justify-center gap-2"
+          onClick={() => console.log("Sign Up")}
+          disabled={isLoading}
+          className="w-full my-5 font-['inter'] text-sm font-semibold lg:text-[18px] z-50 bg-gradient-to-r from-[#2199FF] to-[#A7D6FF] text-white py-2 rounded-lg hover:bg-indigo-700 transition duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
         >
-          Sign Up
+          {isLoading ? "Signing Up..." : "Sign Up"}
         </button>
 
         <div className="flex items-center my-4">
