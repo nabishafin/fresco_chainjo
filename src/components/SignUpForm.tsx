@@ -32,8 +32,9 @@ const SignUpForm = () => {
       alert("Registration successful! Please login.");
       router.push("/login"); // Redirect to login page
     } catch (error) {
-      console.error("Registration failed:", error);
-      alert("Registration failed. Please try again.");
+      console.error("Registration failed:", JSON.stringify(error, null, 2));
+      const errorMessage = (error as any)?.data?.message || (error as any)?.message || "Registration failed. Please try again.";
+      alert(errorMessage);
     }
   };
 

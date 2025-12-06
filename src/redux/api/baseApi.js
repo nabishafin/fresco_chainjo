@@ -3,7 +3,7 @@ import { setLogin, logout } from "../slices/authSlice";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_BASE_URL ||
-  "https://operating-three-singh-container.trycloudflare.com/api/v1";
+  "https://screensavers-nightlife-vii-yards.trycloudflare.com/api/v1"; // Fallback to local backend if env var is missing
 
 // Create a base query with automatic token refresh
 const baseQuery = fetchBaseQuery({
