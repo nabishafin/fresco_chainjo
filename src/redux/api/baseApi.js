@@ -113,8 +113,9 @@ export const baseApi = createApi({
     "dashboardStats",
     "admin-users",
     "earnings-overview",
-    "Faqs",
+    "Faq",
     "payments",
+    "Subscription",
   ],
   endpoints: () => ({}),
   // Global configuration for refetch behavior

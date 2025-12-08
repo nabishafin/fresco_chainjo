@@ -6,73 +6,59 @@ import Image from "next/image";
 import { IoIosArrowDropright } from "react-icons/io";
 import fire from "@/assets/fireball.png";
 import { useRouter } from "next/navigation";
-// import { useRouter } from "next/router";
+import { useGetAllSubscriptionsQuery } from "@/redux/features/suscriptions/suscriptionsApi";
 
-
-const cardData = [
-  {
-    id: 1,
-    category: "NORMAL",
-    amountFirst: "100/",
-    amountLast: "15Min",
-    text: "Access to a randomly assigned phone line.",
-    btn: "Choose plan with random",
-    features: [
-      "Real-time SMS messages",
-      "15-minute auto-delete",
-      "Basic security features",
-    ],
-  },
-  {
-    id: 2,
-    category: "PRO",
-    amountFirst: "200/",
-    amountLast: "30Min",
-    tag: "Most Popular",
-    text: "Choose your specific phone line number.",
-    btn: "Choose plan with specific line",
-    features: [
-      "Real-time SMS messages",
-      "15-minute auto-delete",
-      "Choose your phone number",
-      "Enhanced security features",
-    ],
-  },
-  {
-    id: 3,
-    category: "PREMIUM",
-    amountFirst: "300/",
-    amountLast: "45Min",
-    text: "Extended access with premium features.",
-    btn: "Choose plan with premium",
-    features: [
-      "Real-time SMS messages",
-      "15-minute auto-delete",
-      "Choose your phone number",
-      "Full hour of access",
-      "Premium support",
-    ],
-  },
-];
+interface CoinPlan {
+  _id: string;
+  type: string;
+  coin: number;
+  price: number;
+  time: number;
+  title: string;
+  subTitle: string[];
+  status: string | null;
+}
 
 const PricingCards = () => {
+  const router = useRouter();
+  const { data: coinsData, isLoading } = useGetAllSubscriptionsQuery({});
 
-  const router = useRouter()
+  // Map API data to UI structure
+  const plans = (coinsData?.data || []).map((plan: CoinPlan) => ({
+    id: plan._id,
+    category: plan.type,
+    amountFirst: `${plan.price}/`,
+    amountLast: `${plan.time}Min`,
+    text: plan.title,
+    btn: `Choose plan with ${plan.type?.toLowerCase()}`,
+    tag: plan.status || undefined,
+    features: plan.subTitle || []
+  }));
 
-  const handleClick = (category:string) =>{
-       if(category === "NORMAL"){
-        router.push("/normal")
-       }else if(category === "PRO"){
-        router.push("/pro")
-       }else if(category ==="PREMIUM"){
-        router.push("/premium")
-       }
-  }
+  const displayData = plans.length > 0 ? plans : (isLoading ? [] : []);
 
-  
+  if (isLoading) return <div className="text-white text-center mt-10">Loading plans...</div>;
+
+  const handleClick = (category: string) => {
+    // Basic routing logic based on category names or ID if needed in future
+    // For now keeping existing logic but adaptable
+    const cat = category.toUpperCase();
+    if (cat.includes("NORMAL")) {
+      router.push("/normal");
+    } else if (cat.includes("PRO") && !cat.includes("PREMIUM")) { // "PRO" but not "ULTRA PREMIUM" ?
+      // BE "Ultra Premium" might contain "Premium"
+      router.push("/pro");
+    } else if (cat.includes("PREMIUM")) {
+      router.push("/premium");
+    } else {
+      // Fallback or default
+      router.push("/normal");
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mt-12 md:mt-20">
-      {cardData.map((card) => (
+      {displayData.map((card: any) => (
         <div
           key={card.id}
           className="group relative p-[1px] rounded-2xl bg-gradient-to-b from-transparent via-transparent to-transparent hover:from-[#0685F1]/50 hover:to-[#AAD8FF]/50 transition-all duration-300"
@@ -80,7 +66,7 @@ const PricingCards = () => {
           <div className="text-white p-6 sm:p-8 md:p-10 border bg-[#000000] border-[#323232] rounded-2xl flex flex-col gap-5 sm:gap-6 h-full min-h-[520px] md:min-h-[580px] lg:min-h-[600px]">
             {/* Category + Tag */}
             <div className="relative">
-              <h2 className='font-["inter"] text-xl sm:text-2xl tracking-[5px] sm:tracking-[8px]'>
+              <h2 className='font-["inter"] text-xl sm:text-2xl tracking-[5px] sm:tracking-[8px] uppercase'>
                 {card.category}
               </h2>
 
@@ -116,14 +102,14 @@ const PricingCards = () => {
 
             {/* Button */}
             <div className="group my-4 sm:my-6 relative rounded-2xl hover:shadow-[0_0_12px_#0082F2] bg-gradient-to-br from-transparent via-transparent to-transparent hover:from-[#0685F1] hover:to-[#AAD8FF] transition-all">
-              <button onClick={()=>handleClick(card.category)} className='border hover:border-[#217ECE] border-[#323232] w-full p-2 sm:p-3 rounded-xl font-["inter"] bg-[#0F1D2A] text-sm sm:text-base'>
+              <button onClick={() => handleClick(card.category)} className='border hover:border-[#217ECE] border-[#323232] w-full p-2 sm:p-3 rounded-xl font-["inter"] bg-[#0F1D2A] text-sm sm:text-base'>
                 {card.btn}
               </button>
             </div>
 
             {/* Features */}
             <div className="flex flex-col gap-3 sm:gap-4">
-              {card.features.map((feature, index) => (
+              {card.features?.map((feature: string, index: number) => (
                 <p
                   key={index}
                   className='flex gap-2 sm:gap-3 items-center font-["inter"] text-sm sm:text-base'

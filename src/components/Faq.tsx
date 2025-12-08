@@ -4,6 +4,13 @@ import React from "react";
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
+import { useGetAllFaqsQuery } from "@/redux/features/faq/faqApi";
+
+interface FaqItem {
+  _id?: string;
+  question: string;
+  answer: string;
+}
 
 const Faq = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -12,38 +19,16 @@ const Faq = () => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  const faqs = [
-    {
-      question: "How do I start using Secure Phone line?",
-      answer:
-        "To start using a secure phone line, the first step is to choose a reliable service provider that offers encrypted calling features. Once you’ve selected a provider, you usually need to register for an account and install their dedicated app or software on your device.",
-    },
-    {
-      question: "What's the difference between Specific and Random lines?",
-      answer:
-        "A specific line lets you pick an exact number you prefer, but comes with a slightly higher cost. A random line is automatically assigned to you at a lower rate, offering the same secure and temporary access without any setup hassle.",
-    },
-    {
-      question: "How long do messages stay available?",
-      answer:
-        "All messages are stored temporarily for 15 minutes before being auto-deleted. This ensures complete privacy — no data is kept on our servers once the timer runs out.",
-    },
-    {
-      question: "Can I extend my session if it's about to expire?",
-      answer:
-        "Yes, you can purchase additional time before your session ends. Simply go to your dashboard and select 'Extend Session' to add more minutes instantly without losing your current messages.",
-    },
-    {
-      question: "Is my payment information secure?",
-      answer:
-        "Absolutely. All payments are processed through encrypted gateways like Stripe to protect your financial data. We never store or share your payment details with any third party.",
-    },
-    {
-      question: "Can I use this service on mobile devices?",
-      answer:
-        "Yes, our platform is fully optimized for mobile and tablet use. You can securely view messages, buy coins, and manage your sessions right from your smartphone’s browser.",
-    },
-  ];
+
+
+  const { data: faqData, isLoading, error } = useGetAllFaqsQuery({});
+
+  // Use API data if available, otherwise fall back to empty array or handle error
+  // Assuming API returns { data: [...] } or just [...]
+  const faqs = (faqData?.data || []) as FaqItem[];
+
+  if (isLoading) return <div className="text-white text-center">Loading FAQs...</div>;
+  if (error) return <div className="text-red-500 text-center">Error loading FAQs</div>;
 
   return (
     <div className="max-w-10/12 mx-auto flex flex-col md:flex-row my-20">
@@ -87,9 +72,8 @@ const Faq = () => {
               </button>
 
               <div
-                className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                  openIndex === index ? "max-h-40" : "max-h-0"
-                }`}
+                className={`transition-all duration-300 ease-in-out overflow-hidden ${openIndex === index ? "max-h-40" : "max-h-0"
+                  }`}
               >
                 <p className='text-[#C8CACC] px-4 pb-4 font-["inter"] lg:text-sm'>
                   {faq.answer}
