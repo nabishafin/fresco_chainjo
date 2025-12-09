@@ -1,6 +1,9 @@
+"use client";
 import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
-import React from "react";
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { io, Socket } from "socket.io-client";
 import "../../../app/globals.css";
 import {
   data,
@@ -10,6 +13,54 @@ import {
 } from "../../../../constans";
 
 const Message = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    // Replace with your server URL
+    const token = localStorage.getItem("accessToken"); // Assuming the token key is 'token'
+    const socket: Socket = io(
+      `${process.env.NEXT_PUBLIC_SOCKET_BASE_URL}?token=${token}`
+    );
+
+    // 1. On connection, emit 'session-started'
+    socket.on("connect", () => {
+      console.log("Socket connected");
+      socket.emit("session-started");
+    });
+
+    // 2. Listen for 'get-single-user-session-data'
+    socket.on("get-single-user-session-data", (response) => {
+      console.log("Received session data:", response);
+      if (response.data && response.data.isSessioned === false) {
+        console.log("Session ended, redirecting to pricing page.");
+        router.push("/pricing");
+      }
+      // If isSessioned is true, do nothing as per instructions.
+    });
+
+    // 3. Listen for 'recieve-message'
+    socket.on("recieve-message", (message) => {
+      console.log("Received message:", message);
+      // Handle receiving message logic here
+    });
+
+    // 4. Listen for 'get-session'
+    socket.on("get-session", (session) => {
+      console.log("Received session:", session);
+      // Handle getting session logic here
+    });
+
+    socket.on("disconnect", () => {
+      console.log("Socket disconnected");
+    });
+
+    // Cleanup on component unmount
+    return () => {
+      console.log("Disconnecting socket...");
+      socket.disconnect();
+    };
+  }, [router]); // router is a dependency
+
   return (
     <div className="z-10 text-white flex flex-col gap-[80px]">
       {/* this is for nav bar */}
