@@ -1,7 +1,7 @@
 "use client";
 import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { io, Socket } from "socket.io-client";
 import "../../../app/globals.css";
@@ -12,8 +12,33 @@ import {
   user_message,
 } from "../../../../constans";
 
+interface SessionData {
+  phoneNumber: string;
+  planType: string;
+  sessionToLive: string;
+}
+
 const Message = () => {
   const router = useRouter();
+  const [sessionData, setSessionData] = useState<SessionData | null>(null);
+  const [timeRemaining, setTimeRemaining] = useState<number | null>(null); // Time in seconds
+  const timerInitialized = useRef(false); // Track if timer has been initialized
+
+  // Countdown timer effect - decreases every second
+  useEffect(() => {
+    if (timeRemaining !== null && timeRemaining > 0) {
+      const interval = setInterval(() => {
+        setTimeRemaining((prev) => {
+          if (prev === null || prev <= 0) {
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000); // Decrease every 1 second (1000ms)
+
+      return () => clearInterval(interval);
+    }
+  }, [timeRemaining]);
 
   useEffect(() => {
     // Replace with your server URL
@@ -25,7 +50,7 @@ const Message = () => {
     // 1. On connection, emit 'session-started'
     socket.on("connect", () => {
       console.log("Socket connected");
-      socket.emit("session-started");
+      // socket.emit("session-started");
     });
 
     // 2. Listen for 'get-single-user-session-data'
@@ -34,6 +59,20 @@ const Message = () => {
       if (response.data && response.data.isSessioned === false) {
         console.log("Session ended, redirecting to pricing page.");
         router.push("/pricing");
+      } else if (response.data && response.data._doc) {
+        // Extract session data from _doc
+        const { phoneNumber, planType, sessionToLive } = response.data._doc;
+        setSessionData({
+          phoneNumber,
+          planType,
+          sessionToLive,
+        });
+
+        // Initialize countdown timer only once (not on every socket update)
+        if (!timerInitialized.current) {
+          setTimeRemaining(parseInt(sessionToLive) * 60); // Convert minutes to seconds
+          timerInitialized.current = true;
+        }
       }
       // If isSessioned is true, do nothing as per instructions.
     });
@@ -96,7 +135,7 @@ const Message = () => {
                   />
                 </svg>
               </span>
-              <span> +1 (555) 123-4567</span>
+              <span>{sessionData?.phoneNumber || "Loading..."}</span>
             </p>
             <p className="flex items-center gap-2">
               <span>
@@ -123,7 +162,11 @@ const Message = () => {
                   />
                 </svg>
               </span>
-              <span>12:34 remaining</span>
+              <span>
+                {timeRemaining !== null
+                  ? `${Math.floor(timeRemaining / 60)}:${String(timeRemaining % 60).padStart(2, '0')}`
+                  : "Loading..."}
+              </span>
             </p>
           </div>
           {/* this is for Session Info part in the message part */}
@@ -140,7 +183,7 @@ const Message = () => {
                     Phone Number
                   </strong>
                   <span className="text-sm text-[#0082F2]">
-                    {data.phone_number}
+                    {sessionData?.phoneNumber || "--"}
                   </span>
                 </p>
                 <p className="flex flex-col gap-2">
@@ -148,7 +191,7 @@ const Message = () => {
                     Plan type
                   </strong>
                   <span className="text-sm text-[#0082F2]">
-                    {data.plan_type}
+                    {sessionData?.planType || "--"}
                   </span>
                 </p>
                 <p className="flex flex-col gap-2">

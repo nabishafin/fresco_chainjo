@@ -10,10 +10,20 @@ export const subscriptionsApi = baseApi.injectEndpoints({
         }),
 
         // GET single subscription by ID
-        // getSubscriptionById: builder.query({
-        //     query: (id) => `/subscriptions/${id}`,
-        //     providesTags: (result, error, id) => [{ type: "Subscription", id }],
-        // }),
+        getSubscriptionById: builder.query({
+            query: (id) => `/coins/get-single-ccoin/${id}`,
+            providesTags: (result, error, id) => [{ type: "Subscription", id }],
+        }),
+
+        // Pay for coins
+        payCoin: builder.mutation({
+            query: (data) => ({
+                url: "/coins/pay-coin",
+                method: "POST",
+                body: data,
+            }),
+            invalidatesTags: ["Subscription"],
+        }),
 
         // // CREATE new subscription
         // addSubscription: builder.mutation({
@@ -50,6 +60,7 @@ export const subscriptionsApi = baseApi.injectEndpoints({
 export const {
     useGetAllSubscriptionsQuery,
     useGetSubscriptionByIdQuery,
+    usePayCoinMutation,
     useAddSubscriptionMutation,
     useUpdateSubscriptionMutation,
     useDeleteSubscriptionMutation,

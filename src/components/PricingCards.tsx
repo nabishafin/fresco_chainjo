@@ -27,7 +27,7 @@ const PricingCards = () => {
   const plans = (coinsData?.data || []).map((plan: CoinPlan) => ({
     id: plan._id,
     category: plan.type,
-    amountFirst: `${plan.price}/`,
+    amountFirst: `${plan.coin}/`,
     amountLast: `${plan.time}Min`,
     text: plan.title,
     btn: `Choose plan with ${plan.type?.toLowerCase()}`,
@@ -35,25 +35,14 @@ const PricingCards = () => {
     features: plan.subTitle || []
   }));
 
+
   const displayData = plans.length > 0 ? plans : (isLoading ? [] : []);
 
   if (isLoading) return <div className="text-white text-center mt-10">Loading plans...</div>;
 
   const handleClick = (category: string) => {
-    // Basic routing logic based on category names or ID if needed in future
-    // For now keeping existing logic but adaptable
-    const cat = category.toUpperCase();
-    if (cat.includes("NORMAL")) {
-      router.push("/normal");
-    } else if (cat.includes("PRO") && !cat.includes("PREMIUM")) { // "PRO" but not "ULTRA PREMIUM" ?
-      // BE "Ultra Premium" might contain "Premium"
-      router.push("/pro");
-    } else if (cat.includes("PREMIUM")) {
-      router.push("/premium");
-    } else {
-      // Fallback or default
-      router.push("/normal");
-    }
+    console.log(category)
+    router.push(`/premium/${category}`);
   };
 
   return (
@@ -102,7 +91,7 @@ const PricingCards = () => {
 
             {/* Button */}
             <div className="group my-4 sm:my-6 relative rounded-2xl hover:shadow-[0_0_12px_#0082F2] bg-gradient-to-br from-transparent via-transparent to-transparent hover:from-[#0685F1] hover:to-[#AAD8FF] transition-all">
-              <button onClick={() => handleClick(card.category)} className='border hover:border-[#217ECE] border-[#323232] w-full p-2 sm:p-3 rounded-xl font-["inter"] bg-[#0F1D2A] text-sm sm:text-base'>
+              <button onClick={() => handleClick(card.id)} className='border hover:border-[#217ECE] border-[#323232] w-full p-2 sm:p-3 rounded-xl font-["inter"] bg-[#0F1D2A] text-sm sm:text-base'>
                 {card.btn}
               </button>
             </div>

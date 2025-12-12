@@ -15,10 +15,10 @@ const Pricing = () => {
                 </div>
 
                 {/* title header  */}
-                 <div className='my-5'>
-                <h2 className='text-[#ffffff] font-bold lg:text-5xl/relaxed text-center font-["roboto_slab"]'>Choose The Plan That Fits Your <span className='bg-gradient-to-b from-[#0685F1] to-[#AAD8FF] text-transparent bg-clip-text '>Needs</span> </h2>
-                
-            </div>
+                <div className='my-5'>
+                    <h2 className='text-[#ffffff] font-bold lg:text-5xl/relaxed text-center font-["roboto_slab"]'>Choose The Plan That Fits Your <span className='bg-gradient-to-b from-[#0685F1] to-[#AAD8FF] text-transparent bg-clip-text '>Needs</span> </h2>
+
+                </div>
 
                 {/* cards section */}
                 <PricingCards></PricingCards>

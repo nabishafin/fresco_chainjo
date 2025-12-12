@@ -30,8 +30,16 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
-  // If we get a 401 Unauthorized, try to refresh the token
+  // If we get a 401 Unauthorized, check if it's an actual auth error or business logic error
   if (result?.error && result.error.status === 401) {
+    // If the response has success=false with a message, it's likely a business logic error, not auth
+    const errorData = result.error.data;
+    if (errorData && errorData.success === false && errorData.message) {
+      // This is a business logic error (e.g., "You have no sufficient coins")
+      // Don't try to refresh, just return the error
+      return result;
+    }
+
     const refreshToken = localStorage.getItem("refreshToken");
 
     if (refreshToken) {
