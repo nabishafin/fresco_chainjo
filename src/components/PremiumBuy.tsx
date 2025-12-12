@@ -6,6 +6,8 @@ import amountPic from "@/assets/amountIcon.png";
 import { usePayCoinMutation } from "@/redux/features/suscriptions/suscriptionsApi";
 import { useRouter } from "next/navigation";
 import { io } from "socket.io-client";
+import { toast } from "react-toastify";
+import LoadingSpinner from "./LoadingSpinner";
 
 interface PremiumBuyProps {
   coinId: string;
@@ -24,7 +26,6 @@ const PremiumBuy = ({ coinId, coinType, coinAmount, coinTime, coinPrice }: Premi
     e.preventDefault();
     setIsModalOpen(true);
   };
-
   const handleConfirm = async () => {
     try {
       const result = await payCoin({
@@ -50,13 +51,13 @@ const PremiumBuy = ({ coinId, coinType, coinAmount, coinTime, coinPrice }: Premi
       } else {
         // Payment failed - show error message
         const errorMessage = result.message || "Payment failed. Please try again.";
-        alert(errorMessage);
+        toast.error(errorMessage);
         setIsModalOpen(false);
       }
     } catch (error: any) {
       // Handle API errors (403, 401, etc.)
       const errorMessage = error?.data?.message || error?.message || "Payment failed. Please try again.";
-      alert(errorMessage);
+      toast.error(errorMessage);
       setIsModalOpen(false);
     }
   };
@@ -155,11 +156,15 @@ const PremiumBuy = ({ coinId, coinType, coinAmount, coinTime, coinPrice }: Premi
               </h3>
 
               <div className="flex flex-row-reverse justify-center gap-4 mt-6">
+                import LoadingSpinner from "./LoadingSpinner";
+
+                // ... existing code
+
                 <button
                   onClick={handleConfirm}
-                  className="border-[1px] border-blue-500 text-white px-8 py-2 rounded-lg font-medium transition cursor-pointer font-['inter'] lg:text-lg"
+                  className="border-[1px] border-blue-500 text-white px-8 py-2 rounded-lg font-medium transition cursor-pointer font-['inter'] lg:text-lg flex items-center justify-center gap-2"
                 >
-                  Yes
+                  {isLoading ? <LoadingSpinner size={20} /> : "Yes"}
                 </button>
                 <button
                   onClick={handleCancel}

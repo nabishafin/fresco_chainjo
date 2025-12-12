@@ -6,6 +6,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCreateFuyhBillMutation } from '@/redux/features/payment/paymentApi';
 import amountPic from '@/assets/amountIcon.png';
+import { toast } from "react-toastify";
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const Pricing = () => {
     const [coin, setCoin] = useState("200");
@@ -32,11 +34,11 @@ const Pricing = () => {
                 router.push(paymentUrl);
             } else {
                 console.error("Failed to get payment URL from create-bill response:", result);
-                alert("Could not retrieve payment details. Please try again.");
+                toast.error("Could not retrieve payment details. Please try again.");
             }
         } catch (error) {
             console.error("Error during payment process:", error);
-            alert("An unexpected error occurred. Please try again later.");
+            toast.error("An unexpected error occurred. Please try again later.");
         } finally {
             setIsModalOpen(false);
         }
@@ -147,12 +149,16 @@ const Pricing = () => {
                                 Are you sure you want to spend <span className="text-blue-400">{coin}</span> coins to purchase this plan?
                             </h3>
                             <div className="flex flex-row-reverse justify-center gap-4 mt-6">
+                                import LoadingSpinner from "@/components/LoadingSpinner";
+
+                                // ... existing code
+
                                 <button
                                     onClick={handleConfirm}
                                     disabled={isLoading}
-                                    className="border-[1px] border-blue-500 text-white px-8 py-2 rounded-lg font-medium transition cursor-pointer font-['inter'] lg:text-lg disabled:opacity-50"
+                                    className="border-[1px] border-blue-500 text-white px-8 py-2 rounded-lg font-medium transition cursor-pointer font-['inter'] lg:text-lg disabled:opacity-50 flex items-center justify-center gap-2"
                                 >
-                                    {isLoading ? "Processing..." : "Yes"}
+                                    {isLoading ? <LoadingSpinner size={20} /> : "Yes"}
                                 </button>
                                 <button
                                     onClick={handleCancel}

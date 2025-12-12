@@ -6,6 +6,8 @@ import { FcGoogle } from "react-icons/fc";
 
 import { useRegisterUserMutation } from "@/redux/features/auth/authApi";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import LoadingSpinner from "./LoadingSpinner";
 
 const SignUpForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -29,12 +31,12 @@ const SignUpForm = () => {
       console.log("Calling registerUser mutation..."); // Debug log
       const response = await registerUser(formData).unwrap();
       console.log("Registration successful:", response);
-      alert("Registration successful! Please login.");
+      toast.success("Registration successful! Please login.");
       router.push("/login"); // Redirect to login page
     } catch (error) {
       console.error("Registration failed:", JSON.stringify(error, null, 2));
       const errorMessage = (error as any)?.data?.message || (error as any)?.message || "Registration failed. Please try again.";
-      alert(errorMessage);
+      toast.error(errorMessage);
     }
   };
 
@@ -127,7 +129,7 @@ const SignUpForm = () => {
           disabled={isLoading}
           className="w-full my-5 font-['inter'] text-sm font-semibold lg:text-[18px] z-50 bg-gradient-to-r from-[#2199FF] to-[#A7D6FF] text-white py-2 rounded-lg hover:bg-indigo-700 transition duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
         >
-          {isLoading ? "Signing Up..." : "Sign Up"}
+          {isLoading ? <LoadingSpinner size={20} /> : "Sign Up"}
         </button>
 
         <div className="flex items-center my-4">

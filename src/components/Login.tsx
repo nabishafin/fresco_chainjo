@@ -7,6 +7,8 @@ import { useLoginMutation } from "@/redux/features/auth/authApi";
 import { setLogin } from "@/redux/slices/authSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import LoadingSpinner from "./LoadingSpinner";
 
 const Login = () => {
   const [checked, setChecked] = useState(false);
@@ -38,11 +40,11 @@ const Login = () => {
         })
       );
 
-      alert("Login successful!");
+      toast.success("Login successful!");
       router.push("/");
     } catch (error: any) {
       console.error("Login failed:", error);
-      alert(
+      toast.error(
         error?.data?.message || "Login failed. Please check your credentials."
       );
     }
@@ -106,9 +108,8 @@ const Login = () => {
           <div className="cursor-pointer" onClick={() => setChecked(!checked)}>
             <label className="flex items-center space-x-2 cursor-pointer select-none text-[#C8CACC] hover:text-white transition">
               <span
-                className={`w-4 h-4 rounded-full border-2 border-white transition-all duration-200 flex items-center justify-center ${
-                  checked ? " bg-white" : "border-gray-400 bg-transparent"
-                }`}
+                className={`w-4 h-4 rounded-full border-2 border-white transition-all duration-200 flex items-center justify-center ${checked ? " bg-white" : "border-gray-400 bg-transparent"
+                  }`}
               >
                 {checked && (
                   <span className="w-2 h-2 bg-white rounded-full"></span>
@@ -127,13 +128,15 @@ const Login = () => {
           </div>
         </div>
 
+
+
         {/* Login Button */}
         <button
           type="submit"
           disabled={isLoading}
-          className="bg-gradient-to-r from-[#2199FF] to-[#A7D6FF] w-full py-2.5 rounded-lg disabled:opacity-50 text-white font-semibold font-['inter']"
+          className="bg-gradient-to-r from-[#2199FF] to-[#A7D6FF] w-full py-2.5 rounded-lg disabled:opacity-50 text-white font-semibold font-['inter'] flex items-center justify-center gap-2"
         >
-          {isLoading ? "Logging in..." : "Login"}
+          {isLoading ? <LoadingSpinner size={20} /> : "Login"}
         </button>
 
         {/* Divider */}

@@ -124,6 +124,7 @@ export const baseApi = createApi({
     "Faq",
     "payments",
     "Subscription",
+    "PhoneNumbers",
   ],
   endpoints: () => ({}),
   // Global configuration for refetch behavior

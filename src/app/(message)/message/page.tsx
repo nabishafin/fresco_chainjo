@@ -16,13 +16,13 @@ interface SessionData {
   phoneNumber: string;
   planType: string;
   sessionToLive: string;
+  createdAt: string
 }
 
 const Message = () => {
   const router = useRouter();
   const [sessionData, setSessionData] = useState<SessionData | null>(null);
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null); // Time in seconds
-  const timerInitialized = useRef(false); // Track if timer has been initialized
 
   // Countdown timer effect - decreases every second
   useEffect(() => {
@@ -39,6 +39,15 @@ const Message = () => {
       return () => clearInterval(interval);
     }
   }, [timeRemaining]);
+
+  useEffect(() => {
+    // Check for authentication
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      router.push("/login");
+      return;
+    }
+  }, [router]);
 
   useEffect(() => {
     // Replace with your server URL
@@ -60,19 +69,17 @@ const Message = () => {
         console.log("Session ended, redirecting to pricing page.");
         router.push("/pricing");
       } else if (response.data && response.data._doc) {
+        const { sessionToLive } = response.data
+
+        console.log("sessionToLive", sessionToLive);
         // Extract session data from _doc
-        const { phoneNumber, planType, sessionToLive } = response.data._doc;
+        const { phoneNumber, planType, createdAt } = response.data._doc;
         setSessionData({
           phoneNumber,
           planType,
           sessionToLive,
+          createdAt
         });
-
-        // Initialize countdown timer only once (not on every socket update)
-        if (!timerInitialized.current) {
-          setTimeRemaining(parseInt(sessionToLive) * 60); // Convert minutes to seconds
-          timerInitialized.current = true;
-        }
       }
       // If isSessioned is true, do nothing as per instructions.
     });
@@ -163,8 +170,15 @@ const Message = () => {
                 </svg>
               </span>
               <span>
-                {timeRemaining !== null
-                  ? `${Math.floor(timeRemaining / 60)}:${String(timeRemaining % 60).padStart(2, '0')}`
+                {sessionData?.sessionToLive
+                  ? (() => {
+                    const totalSeconds = Number(sessionData.sessionToLive);
+                    const minutes = Math.floor(totalSeconds / 60);
+                    const seconds = totalSeconds % 60;
+                    return `${minutes.toString().padStart(2, "0")}:${seconds
+                      .toString()
+                      .padStart(2, "0")}`;
+                  })()
                   : "Loading..."}
               </span>
             </p>
@@ -199,7 +213,9 @@ const Message = () => {
                     Session started
                   </strong>
                   <span className="text-sm text-[#E6E6E6]">
-                    {data.session_started}
+                    {sessionData?.createdAt
+                      ? new Date(sessionData.createdAt).toLocaleTimeString()
+                      : "--"}
                   </span>
                 </p>
               </div>

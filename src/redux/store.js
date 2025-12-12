@@ -9,14 +9,14 @@ import {
   REHYDRATE,
   persistStore,
 } from "redux-persist";
-import sessionStorage from "redux-persist/lib/storage/session";
+import storage from "redux-persist/lib/storage"; // Defaults to localStorage
 import authReducer from "./slices/authSlice";
 import forgotPasswordReducer from "./slices/forgotPasswordSlice";
 import baseApi from "./api/baseApi";
 
 const persistConfig = {
   key: "auth",
-  storage: sessionStorage,
+  storage,
   whitelist: ["user", "token", "refreshToken", "isAuthenticated"], // Only persist these fields
 };
 
