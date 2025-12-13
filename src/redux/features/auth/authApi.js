@@ -6,6 +6,7 @@ import {
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+
     // 01. login
     login: builder.mutation({
       query: (loginData) => ({
@@ -61,7 +62,7 @@ export const authApi = baseApi.injectEndpoints({
     // 06. forgot password
     forgotPassword: builder.mutation({
       query: (data) => ({
-        url: `/auth/forgot-password`,
+        url: `/users/send-email-for-reset-password`,
         method: "POST",
         body: data,
       }),
@@ -88,7 +89,7 @@ export const authApi = baseApi.injectEndpoints({
     // 07. verify email/OTP
     verifyEmail: builder.mutation({
       query: ({ email, otp }) => ({
-        url: "/auth/verify-email-otp",
+        url: `/users/verify-otp`,
         method: "POST",
         body: { email, otp },
       }),
@@ -98,7 +99,7 @@ export const authApi = baseApi.injectEndpoints({
     // 08. reset password
     resetPassword: builder.mutation({
       query: (data) => ({
-        url: `/auth/reset-password`,
+        url: `/users/reset-password`,
         method: "POST",
         body: data,
       }),
@@ -141,6 +142,14 @@ export const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["auth"],
     }),
+    // 12. get profile data (coins, etc)
+    getProfile: builder.query({
+      query: () => ({
+        url: "/users/profile-data",
+        method: "GET",
+      }),
+      providesTags: ["auth"], // Important to auto-refetch on mutations if needed
+    }),
   }),
 });
 
@@ -156,4 +165,5 @@ export const {
   useUpdateUserMutation,
   useRegisterMutation,
   useRegisterUserMutation,
+  useGetProfileQuery,
 } = authApi;

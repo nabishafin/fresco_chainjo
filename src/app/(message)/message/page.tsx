@@ -5,12 +5,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { io, Socket } from "socket.io-client";
 import "../../../app/globals.css";
-import {
-  data,
-  OtherMessage,
-  other_person_message,
-  user_message,
-} from "../../../../constans";
 
 interface SessionData {
   phoneNumber: string;
@@ -19,10 +13,29 @@ interface SessionData {
   createdAt: string
 }
 
+interface MessageData {
+  _id: string;
+  message: string;
+  from: string;
+  device: string;
+  time: string;
+  deleted: boolean;
+  __v: number;
+  createdAt: string;
+}
+
+interface SocketResponse {
+  code: number;
+  success: boolean;
+  message: string;
+  data: MessageData[];
+}
+
 const Message = () => {
   const router = useRouter();
   const [sessionData, setSessionData] = useState<SessionData | null>(null);
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null); // Time in seconds
+  const [messages, setMessages] = useState<MessageData[]>([]);
 
   // Countdown timer effect - decreases every second
   useEffect(() => {
@@ -85,9 +98,11 @@ const Message = () => {
     });
 
     // 3. Listen for 'recieve-message'
-    socket.on("recieve-message", (message) => {
-      console.log("Received message:", message);
-      // Handle receiving message logic here
+    socket.on("recieve-message", (response: SocketResponse) => {
+      console.log("Received message:", response);
+      if (response && response.success && Array.isArray(response.data)) {
+        setMessages(response.data);
+      }
     });
 
     // 4. Listen for 'get-session'
@@ -106,6 +121,9 @@ const Message = () => {
       socket.disconnect();
     };
   }, [router]); // router is a dependency
+
+  const incomingMessages = messages.filter(m => m.from !== sessionData?.phoneNumber);
+  const outgoingMessages = messages.filter(m => m.from === sessionData?.phoneNumber);
 
   return (
     <div className="z-10 text-white flex flex-col gap-[80px]">
@@ -186,7 +204,7 @@ const Message = () => {
           {/* this is for Session Info part in the message part */}
           <div className="flex gap-[14px] ">
             {/* session info part */}
-            <div className="session_info flex-1 flex justify-start items-start flex-col max-w-[174px]">
+            <div className="session_info flex-1 flex justify-start items-start flex-col max-w-[174px] rounded-lg mt-2">
               <h1 className="text-[#E6E6E6] text-center text-[18px]">
                 Session Info
               </h1>
@@ -221,41 +239,43 @@ const Message = () => {
               </div>
             </div>
             {/* message part */}
-            <div className="flex-3 flex flex-col gap-6">
-              <div className="flex justify-between items-end py-6">
-                {/* other person message */}
-                <div className="flex flex-col gap-[18px]">
-                  {other_person_message.map(
-                    (message: OtherMessage, index: number) => {
-                      return (
-                        <div key={index}>
-                          <div className="other_message">
-                            <p className="message_time text-[#C8CACC] text-[12px]">
-                              {message.time}
-                            </p>
-                            <p className="message_content text-[#E6E6E6] text-[12px]">
-                              {message.message}
-                            </p>
+            <div className="flex-3 flex flex-col gap-6 w-full mt-2">
+              <div className="h-[30vh] min-h-[400px] overflow-y-auto overflow-x-hidden pr-2 border border-[#333] rounded-lg p-4 bg-[#0a0a0a50] backdrop-blur-sm">
+                <div className="flex justify-between items-end min-h-full">
+                  {/* other person message (Left Column) */}
+                  <div className="flex flex-col gap-[18px] w-[48%]">
+                    {incomingMessages.map(
+                      (message, index) => {
+                        return (
+                          <div key={message._id || index}>
+                            <div className="other_message">
+                              <p className="message_time text-[#C8CACC] text-[12px]">
+                                {message.time}
+                              </p>
+                              <p className="message_content text-[#E6E6E6] text-[12px]">
+                                {message.message}
+                              </p>
+                            </div>
                           </div>
+                        );
+                      }
+                    )}
+                  </div>
+                  {/* user message (Right Column) */}
+                  <div className="flex flex-col gap-[18px] w-[48%] items-end">
+                    {outgoingMessages.map((message, index) => {
+                      return (
+                        <div key={message._id || index} className="use_message">
+                          <p className="text-[#C8CACC] text-[12px] text-right">
+                            {message.time}
+                          </p>
+                          <p className="text-[#E6E6E6] text-[12px]">
+                            {message.message}
+                          </p>
                         </div>
                       );
-                    }
-                  )}
-                </div>
-                {/* user message */}
-                <div>
-                  {user_message.map((message: OtherMessage, index: number) => {
-                    return (
-                      <div key={index} className="use_message">
-                        <p className="text-[#C8CACC] text-[12px]">
-                          {message.time}
-                        </p>
-                        <p className="text-[#E6E6E6] text-[12px]">
-                          {message.message}
-                        </p>
-                      </div>
-                    );
-                  })}
+                    })}
+                  </div>
                 </div>
               </div>
               <div className="w-full">

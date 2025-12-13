@@ -8,10 +8,21 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "@/redux/slices/authSlice";
 import { useRouter } from "next/navigation";
 import amountIcon from "@/assets/amountIcon.png";
+import { useGetProfileQuery } from "@/redux/features/auth/authApi";
 
 const NavBar = () => {
   const [openMenu, setOpenMenu] = useState(false);
-  const { user } = useSelector((state: any) => state.auth);
+  const { user: reduxUser } = useSelector((state: any) => state.auth);
+  // Fetch fresh profile data
+  const { data: profileData } = useGetProfileQuery(undefined, {
+    skip: !reduxUser, // Skip if not logged in (according to redux state)
+    refetchOnMountOrArgChange: true,
+  });
+
+  // Use profile data if available, otherwise fall back to Redux state
+  // API response structure: { code: 200, success: true, message: "...", data: { ...user object... } }
+  const user = profileData?.data || reduxUser;
+
   const dispatch = useDispatch();
   const router = useRouter();
 

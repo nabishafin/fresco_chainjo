@@ -15,10 +15,17 @@ const paymentApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    getCoinPrices: builder.query({
+      query: () => ({
+        url: "/coins/get-coin-price",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
 export const {
   useCreateFuyhBillMutation,
   useLazyGetFuyhBillStatusQuery,
+  useGetCoinPricesQuery,
 } = paymentApi;
